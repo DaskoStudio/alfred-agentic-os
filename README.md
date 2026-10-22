@@ -1,53 +1,33 @@
-# ALFRED — Agentic OS
+<div align="center">
 
-> An autonomous, multi-platform assistant that orchestrates tasks through a registry of MCP (Model Context Protocol) tools, with desktop and mobile clients connected to a backend.
+<img src="./.github/banner.svg" alt="ALFRED" width="100%">
 
-![Status](https://img.shields.io/badge/status-showcase-38f0c0?style=flat-square)
-![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
-![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)
-![MCP](https://img.shields.io/badge/MCP-registry-6ea8ff?style=flat-square)
-![Tauri](https://img.shields.io/badge/Tauri-24C8D8?style=flat-square&logo=tauri&logoColor=white)
-![React](https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=black)
+**An autonomous, multi-platform assistant that orchestrates tasks through a registry of MCP (Model Context Protocol) tools, with desktop and mobile clients connected to a backend.**
 
-> **ℹ️ Showcase repository.** This is a *sanitised public copy* of a personal project. It presents the architecture and the technical choices **without sensitive code, secrets or private modules**. The application core stays private: every API route below the health check is a stub that answers `501 Not Implemented`.
+![Status](https://img.shields.io/badge/status-showcase-38f0c0?style=flat-square) ![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white) ![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white) ![MCP](https://img.shields.io/badge/MCP-registry-6ea8ff?style=flat-square) ![Tauri](https://img.shields.io/badge/Tauri-24C8D8?style=flat-square&logo=tauri&logoColor=white) ![React](https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=black)
 
----
+[Concept](#-concept) · [Architecture](#-architecture) · [Getting started](#-getting-started) · [Tech stack](#-tech-stack)
 
-## Table of contents
+</div>
 
-- [Concept](#concept)
-- [Architecture](#architecture)
-- [What this repository contains](#what-this-repository-contains)
-- [Key design ideas](#key-design-ideas)
-- [Getting started](#getting-started)
-- [Project structure](#project-structure)
-- [Tech stack](#tech-stack)
+> [!IMPORTANT]
+> **Showcase repository.** This is a *sanitised public copy* of a personal project. It presents the architecture and the technical choices **without sensitive code, secrets or private modules**. The application core stays private: every API route below the health check is a stub that answers `501 Not Implemented`.
 
-## Concept
+## 📖 Concept
 
 ALFRED is an *agentic OS*: instead of a single chat window, it is a set of agents that can discover tools, call them, and coordinate work across devices. Tools are exposed through a standard **MCP registry**, so an agent can find and invoke capabilities without hard-coded integrations. A desktop client and a mobile client both talk to the same backend.
 
-## Architecture
+## 🏗️ Architecture
 
-```text
- ┌──────────────────┐         ┌──────────────────┐
- │ Desktop client   │         │ Mobile client    │
- │ Tauri + React    │         │ (app)            │
- └────────┬─────────┘         └────────┬─────────┘
-          │      REST / WebSocket      │
-          └──────────────┬─────────────┘
-                         ▼
-               ┌───────────────────┐        ┌──────────────────────┐
-               │ Backend (FastAPI) │◄──────►│ MCP tool registry     │
-               │ API + auth        │        │ discovery & calls     │
-               └─────────┬─────────┘        └──────────────────────┘
-                         ▼
-               ┌───────────────────┐
-               │ Orchestrator      │  agents · tasks · memory
-               └───────────────────┘
+```mermaid
+flowchart TB
+    D["🖥️ Desktop client<br/>Tauri + React"] -->|REST / WebSocket| B
+    P["📱 Mobile client"] -->|REST / WebSocket| B
+    B["⚙️ Backend<br/>FastAPI · API + auth"] <--> R["🧰 MCP tool registry<br/>discovery and calls"]
+    B --> O["🧠 Orchestrator<br/>agents · tasks · memory"]
 ```
 
-## What this repository contains
+## 📦 What this repository contains
 
 | Component | Status in this repository |
 |---|---|
@@ -61,14 +41,14 @@ ALFRED is an *agentic OS*: instead of a single chat window, it is a set of agent
 
 The concepts described on this page are the *target* private architecture. No MCP server, real tool, orchestration logic, WebSocket handler or working client is implemented here.
 
-## Key design ideas
+## 🧭 Key design ideas
 
 - **MCP registry** — standardised discovery and invocation of tools by agents.
 - **Multi-agent orchestration** — a task is decomposed and dispatched to specialised agents.
 - **Multi-platform** — a local desktop client plus a mobile client that relies on the remote backend.
 - **Security by placement** — secrets and execution stay server side; clients only expose the UI.
 
-## Getting started
+## 🚀 Getting started
 
 **Prerequisites:** Python 3.11+.
 
@@ -86,7 +66,7 @@ curl -i http://127.0.0.1:8000/api/tools    # HTTP 501 not implemented
 
 Interactive API docs: <http://127.0.0.1:8000/docs>. No secret or external service is required.
 
-## Project structure
+## 🗂️ Project structure
 
 ```text
 app/
@@ -101,10 +81,14 @@ mobile/             Mobile client manifest
 scripts/ docs/ tests/   Reserved placeholders
 ```
 
-## Tech stack
+## 🧰 Tech stack
 
 Python · FastAPI · Uvicorn · MCP · Tauri (Rust) · React · WebSocket (target)
 
 ---
 
-**Author** — Konaté Adama · [github.com/DaskoStudio](https://github.com/DaskoStudio)
+<div align="center">
+
+<sub>Built by <a href="https://github.com/DaskoStudio"><b>Konaté Adama</b></a> · <a href="https://github.com/DaskoStudio?tab=repositories">More projects</a></sub>
+
+</div>
