@@ -1,0 +1,11 @@
+{
+  "name": "alfred-desktop",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Manifeste de structure Tauri/React ; client non implémenté.",
+  "dependencies": {
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "@tauri-apps/api": "^2"
+  }
+}

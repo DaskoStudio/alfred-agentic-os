@@ -61,8 +61,25 @@ Konaté Adama (**[@DaskoStudio](https://github.com/DaskoStudio)**) — Ynov Camp
 
 ## ✨ Fonctionnalités
 
-Présentation de l’architecture et emplacements des composants ; implémentation privée non incluse.
+- API FastAPI : `GET /health` retourne `{"status":"ok"}`.
+- Routes `GET /api/tools`, `POST /api/tools/{name}/call` et `POST /api/agents/run` : HTTP 501 `not implemented`.
+- Contrats `ToolRegistry` et `Agent.run()` : stubs uniquement.
+- Manifestes Tauri/React pour desktop et mobile ; aucun client exécutable fourni.
+
+Les concepts présentés plus haut décrivent l’architecture cible privée. Aucun serveur MCP, outil réel, orchestration, WebSocket ni client fonctionnel n’est implémenté ici.
 
 ## 🚀 Lancer
 
-Cette vitrine ne fournit pas d’application exécutable ni de procédure d’installation : parcourir les dossiers et la documentation d’architecture.
+Prérequis : Python 3.11+.
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+uvicorn app.main:app --reload --host 127.0.0.1
+```
+
+Vérifier : `curl http://127.0.0.1:8000/health`. Documentation API : `http://127.0.0.1:8000/docs`.
+Aucun secret ni service externe requis. Les routes métier répondent volontairement 501.
+
+Les fichiers `desktop/package.json` et `mobile/package.json` déclarent uniquement des dépendances ; ils ne fournissent pas de commande de lancement.
