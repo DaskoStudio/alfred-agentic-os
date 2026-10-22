@@ -1,76 +1,76 @@
-# ALFRED — Agentic OS (copie publique / architecture)
+# ALFRED — Agentic OS
 
-> ℹ️ **Dépôt vitrine.** Ceci est une **copie publique épurée** d'un projet personnel : elle présente l'**architecture** et les choix techniques, **sans code sensible, secrets ni modules privés**. Le cœur applicatif reste privé.
+> An autonomous, multi-platform assistant that orchestrates tasks through a registry of MCP (Model Context Protocol) tools, with desktop and mobile clients connected to a backend.
 
-**ALFRED** est un *agentic OS* : un assistant autonome multi-plateforme capable d'orchestrer des tâches via un registre d'outils **MCP (Model Context Protocol)**, avec des clients bureau et mobile connectés à un backend.
+![Status](https://img.shields.io/badge/status-showcase-38f0c0?style=flat-square)
+![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)
+![MCP](https://img.shields.io/badge/MCP-registry-6ea8ff?style=flat-square)
+![Tauri](https://img.shields.io/badge/Tauri-24C8D8?style=flat-square&logo=tauri&logoColor=white)
+![React](https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=black)
 
-## 🗺️ Vue d'ensemble
-
-```
-┌────────────┐     ┌────────────┐
-│  Desktop   │     │   Mobile   │
-│ Tauri+React│     │   (app)    │
-└─────┬──────┘     └─────┬──────┘
-      │                  │
-      └────────┬─────────┘
-               ▼
-        ┌─────────────┐      ┌──────────────┐
-        │   Backend   │◄────►│ Registre MCP │
-        │  (FastAPI)  │      │  + Outils    │
-        └──────┬──────┘      └──────────────┘
-               ▼
-        ┌─────────────┐
-        │  Orchestr.  │  agents / tâches / mémoire
-        └─────────────┘
-```
-
-## 🧱 Structure
-
-```
-app/
-  core/      # noyau backend, registre MCP, orchestration
-  agents/    # agents et coordination
-  skills/    # outils / compétences natifs
-  api/       # routes REST + WebSocket
-bridge/      # pont entre clients et backend
-desktop/     # app bureau (Tauri Rust + React)
-mobile/      # app mobile
-scripts/     # utilitaires
-docs/        # documentation & schémas
-tests/
-```
-
-## 🧩 Concepts clés
-
-- **Registre MCP** : découverte et appel d'outils standardisés par les agents
-- **Orchestration multi-agents** : décomposition et exécution de tâches
-- **Multi-plateforme** : bureau (local) + mobile (backend distant)
-- **Sécurité** : secrets et exécution côté serveur ; les clients n'exposent que l'UI
-
-## 🛠️ Stack
-
-Python · FastAPI · MCP · Tauri (Rust) · React · WebSocket
-
-## 👤 Auteur
-
-Konaté Adama (**[@DaskoStudio](https://github.com/DaskoStudio)**) — Ynov Campus
+> **ℹ️ Showcase repository.** This is a *sanitised public copy* of a personal project. It presents the architecture and the technical choices **without sensitive code, secrets or private modules**. The application core stays private: every API route below the health check is a stub that answers `501 Not Implemented`.
 
 ---
 
-*Les dossiers de ce dépôt décrivent l'organisation du projet ; le code d'implémentation n'est pas inclus dans cette version publique.*
+## Table of contents
 
-## ✨ Fonctionnalités
+- [Concept](#concept)
+- [Architecture](#architecture)
+- [What this repository contains](#what-this-repository-contains)
+- [Key design ideas](#key-design-ideas)
+- [Getting started](#getting-started)
+- [Project structure](#project-structure)
+- [Tech stack](#tech-stack)
 
-- API FastAPI : `GET /health` retourne `{"status":"ok"}`.
-- Routes `GET /api/tools`, `POST /api/tools/{name}/call` et `POST /api/agents/run` : HTTP 501 `not implemented`.
-- Contrats `ToolRegistry` et `Agent.run()` : stubs uniquement.
-- Manifestes Tauri/React pour desktop et mobile ; aucun client exécutable fourni.
+## Concept
 
-Les concepts présentés plus haut décrivent l’architecture cible privée. Aucun serveur MCP, outil réel, orchestration, WebSocket ni client fonctionnel n’est implémenté ici.
+ALFRED is an *agentic OS*: instead of a single chat window, it is a set of agents that can discover tools, call them, and coordinate work across devices. Tools are exposed through a standard **MCP registry**, so an agent can find and invoke capabilities without hard-coded integrations. A desktop client and a mobile client both talk to the same backend.
 
-## 🚀 Lancer
+## Architecture
 
-Prérequis : Python 3.11+.
+```text
+ ┌──────────────────┐         ┌──────────────────┐
+ │ Desktop client   │         │ Mobile client    │
+ │ Tauri + React    │         │ (app)            │
+ └────────┬─────────┘         └────────┬─────────┘
+          │      REST / WebSocket      │
+          └──────────────┬─────────────┘
+                         ▼
+               ┌───────────────────┐        ┌──────────────────────┐
+               │ Backend (FastAPI) │◄──────►│ MCP tool registry     │
+               │ API + auth        │        │ discovery & calls     │
+               └─────────┬─────────┘        └──────────────────────┘
+                         ▼
+               ┌───────────────────┐
+               │ Orchestrator      │  agents · tasks · memory
+               └───────────────────┘
+```
+
+## What this repository contains
+
+| Component | Status in this repository |
+|---|---|
+| `GET /health` | ✅ Returns `{"status":"ok"}` |
+| `GET /api/tools` | ⛔ Stub — HTTP 501 |
+| `POST /api/tools/{name}/call` | ⛔ Stub — HTTP 501 |
+| `POST /api/agents/run` | ⛔ Stub — HTTP 501 |
+| `ToolRegistry` contract (`register`, `list_tools`, `call`) | ⛔ Interface only |
+| `Agent` abstract class (`run`) | ⛔ Interface only |
+| Desktop and mobile clients | Package manifests only — no runnable client |
+
+The concepts described on this page are the *target* private architecture. No MCP server, real tool, orchestration logic, WebSocket handler or working client is implemented here.
+
+## Key design ideas
+
+- **MCP registry** — standardised discovery and invocation of tools by agents.
+- **Multi-agent orchestration** — a task is decomposed and dispatched to specialised agents.
+- **Multi-platform** — a local desktop client plus a mobile client that relies on the remote backend.
+- **Security by placement** — secrets and execution stay server side; clients only expose the UI.
+
+## Getting started
+
+**Prerequisites:** Python 3.11+.
 
 ```bash
 python3 -m venv .venv
@@ -79,7 +79,32 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload --host 127.0.0.1
 ```
 
-Vérifier : `curl http://127.0.0.1:8000/health`. Documentation API : `http://127.0.0.1:8000/docs`.
-Aucun secret ni service externe requis. Les routes métier répondent volontairement 501.
+```bash
+curl http://127.0.0.1:8000/health          # {"status":"ok"}
+curl -i http://127.0.0.1:8000/api/tools    # HTTP 501 not implemented
+```
 
-Les fichiers `desktop/package.json` et `mobile/package.json` déclarent uniquement des dépendances ; ils ne fournissent pas de commande de lancement.
+Interactive API docs: <http://127.0.0.1:8000/docs>. No secret or external service is required.
+
+## Project structure
+
+```text
+app/
+  main.py           FastAPI application and health check
+  api/routes.py     Route stubs (501)
+  core/registry.py  ToolRegistry contract
+  agents/base.py    Abstract Agent
+  skills/           Reserved: native tools / skills
+bridge/             Reserved: bridge between clients and backend
+desktop/            Tauri + React manifest
+mobile/             Mobile client manifest
+scripts/ docs/ tests/   Reserved placeholders
+```
+
+## Tech stack
+
+Python · FastAPI · Uvicorn · MCP · Tauri (Rust) · React · WebSocket (target)
+
+---
+
+**Author** — Konaté Adama · [github.com/DaskoStudio](https://github.com/DaskoStudio)
