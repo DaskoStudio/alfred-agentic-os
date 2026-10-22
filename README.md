@@ -58,3 +58,11 @@ Konaté Adama (**[@DaskoStudio](https://github.com/DaskoStudio)**) — Ynov Camp
 ---
 
 *Les dossiers de ce dépôt décrivent l'organisation du projet ; le code d'implémentation n'est pas inclus dans cette version publique.*
+
+## ✨ Fonctionnalités
+
+Présentation de l’architecture et emplacements des composants ; implémentation privée non incluse.
+
+## 🚀 Lancer
+
+Cette vitrine ne fournit pas d’application exécutable ni de procédure d’installation : parcourir les dossiers et la documentation d’architecture.
