@@ -1,0 +1,26 @@
+# Secrets / environnements
+.env
+*.env
+*.key
+*.pem
+
+# Données / état / logs
+data/
+logs/
+*.db
+*.sqlite3
+
+# Python
+__pycache__/
+.venv/
+venv/
+
+# Node / Tauri
+node_modules/
+dist/
+target/
+
+# OS / éditeur
+.DS_Store
+.idea/
+.vscode/
